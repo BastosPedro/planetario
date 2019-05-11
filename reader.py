@@ -27,7 +27,8 @@ class Data:
                                names = ["x", "y", "z", "v0x", "v0y", "v0z", "raio", "massa"])
 
         #esse aqui lê o #CONTATO DEM
-        self.contato_dem = pd.read_csv(filePath, skiprows = hashlist[1]+2, nrows = hashlist[2]-hashlist[1]-3, sep = " ", header = None)
+        self.contato_dem = pd.read_csv(filePath, skiprows = hashlist[1]+2, nrows = hashlist[2]-hashlist[1]-3, sep = " ", header = None,
+                                       names = ["idModelo", "Kn"])
 
         #esse aqui lê o #CONTATO_ITERACAO
         self.contato_iteracao = pd.read_csv(filePath, skiprows = hashlist[2]+1, nrows = hashlist[3]-hashlist[2]-2, sep = " ", header = None)
@@ -35,5 +36,6 @@ class Data:
         #aqui lê o #INTEGRADOR
         self.integrador = file[hashlist[3]+1]
 
-        #aqui lê o PARÊMETROS_TEMPO
-        self.parametros_tempo = pd.read_csv(filePath, skiprows = hashlist[4]+1, nrows = hashlist[5]-hashlist[4]-2, sep = " ", header = None)    
+        #aqui lê o PARAMETROS_TEMPO
+        self.parametros_tempo = pd.read_csv(filePath, skiprows = hashlist[4]+1, nrows = hashlist[5]-hashlist[4]-2, sep = " ", header = None,
+                                            names = ["dt", "tempo_final_simulacao", "numero_de_passos_impressao"])    
