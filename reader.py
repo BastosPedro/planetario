@@ -21,10 +21,10 @@ class Data:
             if "#" in file[x]:
                 hashlist.append(x)
 
-
+        
         #esse aqui lê o #PLANETAS
         self.planetas = pd.read_csv(filePath, skiprows = 2, nrows = hashlist[1]-3, sep = " ", header = None,
-                               names = ["x", "y", "z", "v0x", "v0y", "v0z", "raio", "massa"])
+                               names = ["id" ,"x", "y", "z", "v0x", "v0y", "v0z", "raio", "massa"])
 
         #esse aqui lê o #CONTATO DEM
         self.contato_dem = pd.read_csv(filePath, skiprows = hashlist[1]+2, nrows = hashlist[2]-hashlist[1]-3, sep = " ", header = None,

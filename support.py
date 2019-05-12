@@ -11,7 +11,7 @@ import scipy.constants as con
 def gravForce(coordA, coordB, mA, mB):
     r = (coordA-coordB)
     escalar = (con.G * mA * mB)/(norm(r)**3)
-    return escalar * r
+    return -1*(escalar * r)
     
 def springForce(coordA, coordB, radA, radB, k):
     r = (coordA - coordB)

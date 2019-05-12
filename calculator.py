@@ -16,38 +16,70 @@ class EulerModule:
         self.contato_dem = contato_dem
         self.contato_iteracao = contato_iteracao
         self.parametros_tempo = parametros_tempo
+    
+        self.pacing = int(self.parametros_tempo.tempo_final_simulacao[0]/self.parametros_tempo.numero_de_passos_impressao[0])
+    
+                      
+    def setupHistory(self):
+        history = list()
+        size = len(self.planetas)
         
-        self.history = list()
-        size = len(planetas)
-        [self.history.append(pd.DataFrame(columns = ["x", "y", "z", "v0x", "v0y", "v0z"])) for x in range(size)]
+        index = list()
+        for x in range(0, self.parametros_tempo.tempo_final_simulacao[0]+1, self.pacing):
+            index.append(x)
+           
+        [history.append(pd.DataFrame(index = range(0, len(index)), columns = ["x", "y", "z", "v0x", "v0y", "v0z"])) for x in range(size)]
+        
         for x in range(size):
-            self.history[x] = self.history[x].append(self.planetas.iloc[x][['x','y','z', 'v0x', 'v0y', 'v0z']])
-            self.history[x] = self.history[x].reset_index(drop=True)
-        
-     
+            history[x].iloc[0] = self.planetas.iloc[x][['x','y','z', 'v0x', 'v0y', 'v0z']]
+            history[x] = history[x].reindex(index)
+            
+        return history
+    
     def compute(self):
         tf = self.parametros_tempo.tempo_final_simulacao[0]
-        pacing = int(tf/self.parametros_tempo.numero_de_passos_impressao[0])
-        numPlanets = len(self.planetas) 
+        numPlanets = len(self.planetas)
+        print(numPlanets)
         
-        for x in range (0, tf, pacing):
+        history = self.setupHistory()
+        
+        for x in range (self.pacing, tf+1, self.pacing):
             
             #calculo da força em cada planeta no instante analisado   
             force = [0]*numPlanets
             for m in range (numPlanets):
                 for n in range(numPlanets):
                     if n != m:
-                       force[m] = force[m] + calculateForce(np.array([self.planetas.x[m], self.planetas.y[m], self.planetas.z[m]]), 
-                            np.array([self.planetas.x[n], self.planetas.y[n], self.planetas.z[n]]), 
-                            self.planetas.raio[m], self.planetas.raio[n], self.planetas.massa[m], self.planetas.massa[n], self.contato_iteracao[m][n])
+                        thisPlanet = np.array(history[m].loc[x-self.pacing][["x","y","z"]])
+                        otherPlanet = np.array(history[n].loc[x-self.pacing][["x","y","z"]])
+                        
+                        force[m] = force[m] + calculateForce(thisPlanet, otherPlanet, 
+                             self.planetas.raio[m], self.planetas.raio[n], 
+                             self.planetas.massa[m], self.planetas.massa[n], self.contato_iteracao[m][n])
             
-            
-             #calculo da aceleracao em cada planeta no instante analisado  
-            accel = [0]*numPlanets
+            #calculo da aceleracao, velocidade, e posicao em cada planeta no instante analisado  
             for m in range(numPlanets):
-                accel[m] = force[m]/self.planetas.massa[m]
+                accel = force[m]/self.planetas.massa[m]
+                history[m].loc[x][["v0x", "v0y", "v0z"]] = history[m].loc[x-self.pacing][["v0x", "v0y", "v0z"]].values + (self.parametros_tempo.dt[0] * accel)
+                history[m].loc[x][["x", "y", "z"]] = history[m].loc[x-self.pacing][["x", "y", "z"]].values + (self.parametros_tempo.dt[0] * history[m].loc[x][["v0x", "v0y", "v0z"]].values)
             
-        print(force)
-        print(accel)
-                      
-
+            
+        return history
+    
+    def spreadSheet(self, history, filePath):
+        size = len(history)
+        
+        writer = pd.ExcelWriter(filePath)
+        
+        for x in range(size):
+            history[x]["raio"] = self.planetas.iloc[x].raio
+            history[x]["massa"] = self.planetas.iloc[x].massa
+            name = "Corpo Celeste {}".format(int(self.planetas.iloc[x].id))
+            history[x].to_excel(writer, sheet_name = name)
+        
+        writer.save()
+        
+        return history
+        
+            
+            
