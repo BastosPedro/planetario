@@ -7,5 +7,9 @@ Created on Tue May  7 22:46:12 2019
 """
 
 from reader import Data
+from calculator import EulerModule
 
-teste = Data("exemplo.txt")
+dados = Data("exemplo2.txt")
+teste = EulerModule(dados.planetas, dados.contato_dem, dados.contato_iteracao, dados.parametros_tempo)
+
+teste.compute()
