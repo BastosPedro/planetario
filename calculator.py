@@ -39,7 +39,6 @@ class EulerModule:
     def compute(self):
         tf = self.parametros_tempo.tempo_final_simulacao[0]
         numPlanets = len(self.planetas)
-        print(numPlanets)
         
         history = self.setupHistory()
         
@@ -69,11 +68,12 @@ class EulerModule:
     def spreadSheet(self, history, filePath):
         size = len(history)
         
-        writer = pd.ExcelWriter(filePath)
+        writer = pd.ExcelWriter(filePath, engine = "openpyxl")
         
         for x in range(size):
             history[x]["raio"] = self.planetas.iloc[x].raio
             history[x]["massa"] = self.planetas.iloc[x].massa
+            history[x].index.name = "instante"
             name = "Corpo Celeste {}".format(int(self.planetas.iloc[x].id))
             history[x].to_excel(writer, sheet_name = name)
         
