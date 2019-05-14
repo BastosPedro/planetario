@@ -10,8 +10,11 @@ import numpy as np
 from support import calculateForce
 
 class EulerModule:
+    """Classe recebe os dados lidos pela classe Data, e faz todos os cálculos de posição e velocidade, a partir do método de Euler, podendo salvar os resultados numa planilha"""
     
     def __init__(self, data):
+        """Recebe uma instância da classe Data, com as informações retiradas do arquivo txt, e retorna um objeto da classe EulerModule, já feito os cálculos de velocidade e posicão
+        para um sistema, na forma de uma lista de DataFrames do Pandas, cada DataFrame representando um corpo celeste"""
         self.planetas = data.planetas
         self.contato_dem = data.contato_dem
         self.contato_iteracao = data.contato_iteracao
@@ -21,6 +24,7 @@ class EulerModule:
         self.history = self.compute()
                       
     def setupHistory(self):
+        """Monta a lista de DataFrames (cada DataFrame representa um corpo celeste), a ser preenchida pelo método Compute"""
         history = list()
         size = len(self.planetas)
         
@@ -37,6 +41,8 @@ class EulerModule:
         return history
     
     def compute(self):
+        """Faz os calculos de força, aceleração em cada instante para cada planeta, e usando o método de euler, calcula a velocidade e posição para cada ponto no intervalo,
+        prencheendo os DataFrames de cada planeta"""
         tf = self.parametros_tempo.tempo_final_simulacao[0]
         numPlanets = len(self.planetas)
         
@@ -66,6 +72,7 @@ class EulerModule:
         return history
     
     def spreadSheet(self, filePath):
+        """Adiciona massa e raio de cada planeta para seu respectivo DataFrame, e então joga todo em uma planilha .xlsx com o nome do e diretório desejado pelo usuário"""
         size = len(self.history)
         
         writer = pd.ExcelWriter(filePath, engine = "openpyxl")
@@ -78,8 +85,6 @@ class EulerModule:
             self.history[x].to_excel(writer, sheet_name = name)
         
         writer.save()
-        
-        return self.history
         
             
             

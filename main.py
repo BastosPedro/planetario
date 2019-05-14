@@ -7,10 +7,15 @@ Created on Tue May  7 22:46:12 2019
 """
 
 from reader import Data
+from plotter import Plotter
 from calculator import EulerModule
 
-dadosTeste = Data("4planetasXY.txt")
+dadosTeste = Data("2planetasXY.txt")
 
 eulerTeste = EulerModule(dadosTeste)
 
-eulerHistorico = eulerTeste.spreadSheet("mdsmeajude.xlsx")
+eulerTeste.spreadSheet("mdsmeajude.xlsx")
+
+plotagem = Plotter("mdsmeajude.xlsx")
+
+plotagem.plot2d(["blue", "orange"])

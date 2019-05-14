@@ -8,11 +8,12 @@ Este é um arquivo de script temporário.
 import pandas as pd
 
 class Data:
-    """o módulo de leitura dos dados, recebe as informações num arquivo txt e as organiza em dataframes dos pandas 
+    """O módulo de leitura dos dados, recebe as informações num arquivo txt e as organiza em dataframes dos pandas 
         para serem acessados e manipulados facilmente pelos outros módulos"""
     
     def __init__(self, filePath):
-        """aqui é onde ocorre a leitura dos dados a partir do arquivo fornecido pelo usuario"""
+        """Aqui é onde ocorre a leitura dos dados a partir do arquivo fornecido pelo usuario, a função recebe os 
+        o caminho para o arquivo dentro do sistema e retorna um objeto com as informações do arquivo"""
         file = list(open(filePath).read().split("\n"))
         filesize = len(file)
         hashlist = list()
