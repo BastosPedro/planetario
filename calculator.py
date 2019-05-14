@@ -11,14 +11,14 @@ from support import calculateForce
 
 class EulerModule:
     
-    def __init__(self, planetas, contato_dem, contato_iteracao, parametros_tempo):
-        self.planetas = planetas
-        self.contato_dem = contato_dem
-        self.contato_iteracao = contato_iteracao
-        self.parametros_tempo = parametros_tempo
+    def __init__(self, data):
+        self.planetas = data.planetas
+        self.contato_dem = data.contato_dem
+        self.contato_iteracao = data.contato_iteracao
+        self.parametros_tempo = data.parametros_tempo
     
         self.pacing = int(self.parametros_tempo.tempo_final_simulacao[0]/self.parametros_tempo.numero_de_passos_impressao[0])
-    
+        self.history = self.compute()
                       
     def setupHistory(self):
         history = list()
@@ -65,21 +65,21 @@ class EulerModule:
             
         return history
     
-    def spreadSheet(self, history, filePath):
-        size = len(history)
+    def spreadSheet(self, filePath):
+        size = len(self.history)
         
         writer = pd.ExcelWriter(filePath, engine = "openpyxl")
         
         for x in range(size):
-            history[x]["raio"] = self.planetas.iloc[x].raio
-            history[x]["massa"] = self.planetas.iloc[x].massa
-            history[x].index.name = "instante"
+            self.history[x]["raio"] = self.planetas.iloc[x].raio
+            self.history[x]["massa"] = self.planetas.iloc[x].massa
+            self.history[x].index.name = "instante"
             name = "Corpo Celeste {}".format(int(self.planetas.iloc[x].id))
-            history[x].to_excel(writer, sheet_name = name)
+            self.history[x].to_excel(writer, sheet_name = name)
         
         writer.save()
         
-        return history
+        return self.history
         
             
             
