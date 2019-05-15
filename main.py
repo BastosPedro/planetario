@@ -18,4 +18,4 @@ eulerTeste.spreadSheet("mdsmeajude.xlsx")
 
 plotagem = Plotter("mdsmeajude.xlsx")
 
-plotagem.plot2d(["blue", "orange"])
+plotagem.plot2d(["blue", "orange"], "teste.pdf")
