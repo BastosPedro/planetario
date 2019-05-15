@@ -15,7 +15,7 @@ Para usar o programa basta, com os módulos corretos instalados, rodar o script 
 
 Alternativamente, o usuário pode optar por instanciar as classes, de preferência na ordem: 
 - Data, que recebe o diretório do arquivo .txt com os dados
-- EulerModule, que recebe uma instância de Data, e pode retornar um arquivo .xlsx através do comando _spreadSheet_
-- Plotter, que recebe o diretório de um arquivo .xlsx gerado por uma instância do _EulerModule_ e pode plotar a partir do comando _plot2d_
+- EulerModule, que recebe uma instância de Data, e pode retornar um arquivo .xlsx através do método _spreadSheet_
+- Plotter, que recebe o diretório de um arquivo .xlsx gerado por uma instância do _EulerModule_ e pode plotar a partir do método _plot2d_
 
 Os métodos estão documentados para a facilitar o entedimento.
