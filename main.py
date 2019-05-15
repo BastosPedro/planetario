@@ -12,6 +12,7 @@ from calculator import EulerModule
 
 
 def main():
+    """Instancia as classes e executa os métodos em ordem adequadada, recebendo os dados do usuário apropriadamente"""
     print("Bem vindo!")
 
     dadosTeste = Data(input("Escreva o nome do arquivo (com seu diretório, se necessário) a ser lido: "))

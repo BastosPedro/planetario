@@ -10,7 +10,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 class Plotter:
+   """Módulo de visualização do projeto, ao ser instanciado, faz a leitura de um arquivo gerado pelo módolo de análise para então realizar a plotagem"""
    def __init__(self, filePath):
+       """Faz a leitura dos fornecidos pela planilha criada pelo módulo de análise"""
        xlsx = pd.ExcelFile(filePath, engine = "xlrd")
        sheetList = xlsx.sheet_names
        self.NumPlanets = len(sheetList)
@@ -19,10 +21,10 @@ class Plotter:
 
     
    def plot2dToFile(self, colors, filePath):
-       
+       """Faz a plotagem 2d e retorna no um arquivo com diretório, nome, e formato(consulte documentação do matplotlib para saber os formatos suportados) 
+       especificados pelo usuário. Além dessas informações, o método também recebe uma lista com as cores que o usuário deseja ver no gráfico."""
        ax = plt.gca()
-       
-       
+             
        for x in range (self.NumPlanets):
            firstPos = self.planetas[x].head(1)
            lastPos = self.planetas[x].tail(1)
@@ -38,10 +40,10 @@ class Plotter:
        plt.savefig(filePath)
        
    def plot2d(self, colors):
-       
+       """Faz a plotagem 2d e mostra o gráfico numa janela (caso seja rodado direto no terminal do SO). Recebe uma 
+       lista com as cores desejadas pelo usuário para cada corpo celeste."""
        ax = plt.gca()
-       
-       
+         
        for x in range (self.NumPlanets):
            firstPos = self.planetas[x].head(1)
            lastPos = self.planetas[x].tail(1)
