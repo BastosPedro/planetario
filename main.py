@@ -28,10 +28,13 @@ def main():
         eulerTeste.spreadSheet(sheetName)
         print("Os dados foram gravados numa planilha!\n")
 
-    plotagem = Plotter(sheetName)
-
-    plotagem.plot2d(["blue", "orange"], input("Escreva o nome da imagem (com seu diretório, se necessário) a ser gravada: "))
-    print("Plotagem concluída com sucesso!\n")
+    cores = input("Escreva as cores dos corpos celestes no gráfico (em inglês), separadas por vírgula (sem espaço): ").split(sep = ",")
+    if len(cores) != len(eulerTeste.planetas):
+        raise Exception ("Número de cores diferente do número de corpos celestes!")
+    else:
+        plotagem = Plotter(sheetName)
+        plotagem.plot2d(cores, input("Escreva o nome da imagem (com seu diretório, se necessário) a ser gravada: "))
+        print("Plotagem concluída com sucesso!\n")
     
     return
 
