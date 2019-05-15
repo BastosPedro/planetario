@@ -21,8 +21,8 @@ def springForce(coordA, coordB, radA, radB, k):
     deltaX igual ao quanto um dos corpos entrou no outro. Caso não exista choque, essa força é zero"""
     r = (coordA - coordB)
     if norm(r) < (radA + radB):
-        deltaX = (radA+radB) - norm(r)
-        return (k * deltaX) * r
+        deltaX = norm(r) - (radA+radB)
+        return (k * deltaX) * (r/norm(r))
     else:
         return 0
 
