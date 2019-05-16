@@ -29,7 +29,8 @@ class Data:
 
         #esse aqui lê o #CONTATO DEM
         self.contato_dem = pd.read_csv(filePath, skiprows = hashlist[1]+2, nrows = hashlist[2]-hashlist[1]-3, sep = " ", header = None,
-                                       names = ["idModelo", "Kn"])
+                                       names = ["idModelo", "Kn"], index_col = ["idModelo"])
+        #self.contato_dem.set_index("idModelo", inplace=True)
 
         #esse aqui lê o #CONTATO_ITERACAO
         self.contato_iteracao = pd.read_csv(filePath, skiprows = hashlist[2]+1, nrows = hashlist[3]-hashlist[2]-2, sep = " ", header = None)

@@ -51,22 +51,27 @@ class EulerModule:
         
         history = self.setupHistory()
         
+        #"iteracoes"
         for x in range (1, int(self.count)+1):
-            #calculo da força em cada planeta no instante analisado   
-            force = [0]*numPlanets
+            print(x)
+            #calculos para cada planeta numa dada instancia   
             for m in range (numPlanets):
+                #calcula da força sofrida por cada planeta
+                force = np.zeros(3)
                 for n in range(numPlanets):
                     if n != m:
                         thisPlanet = np.array(history[m].iloc[x-1][["x","y","z"]])
                         otherPlanet = np.array(history[n].iloc[x-1][["x","y","z"]])
                         
-                        force[m] = force[m] + calculateForce(thisPlanet, otherPlanet, 
+                        force = force + calculateForce(thisPlanet, otherPlanet, 
                              self.planetas.raio[m], self.planetas.raio[n], 
-                             self.planetas.massa[m], self.planetas.massa[n], self.contato_iteracao[m][n])
+                             self.planetas.massa[m], self.planetas.massa[n], self.contato_dem.loc[self.contato_iteracao[m][n]][0])
+                        
+                        
             
-            #calculo da aceleracao, velocidade, e posicao em cada planeta no instante analisado  
-            for m in range(numPlanets):
-                accel = force[m]/self.planetas.massa[m]
+                #calculo da aceleracao, velocidade, e posicao em cada planeta no instante analisado  
+                accel = force/self.planetas.massa[m]
+                print(force)
                 history[m].iloc[x][["v0x", "v0y", "v0z"]] = history[m].iloc[x-1][["v0x", "v0y", "v0z"]].values + (self.parametros_tempo.dt[0] * accel)
                 history[m].iloc[x][["x", "y", "z"]] = history[m].iloc[x-1][["x", "y", "z"]].values + (self.parametros_tempo.dt[0] * history[m].iloc[x][["v0x", "v0y", "v0z"]].values)
             
