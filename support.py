@@ -12,8 +12,9 @@ def gravForce(coordA, coordB, mA, mB):
     """Calcula, vetorialmente, a força gravitacional que um corpo B exerce em um corpo A (ou o contrário, dependendo da interpretação).
     a função recebe as coordenadas e massas dos corpos desejados, e retorna uma força em sua forma vetorial (um array, obivamente)"""
     r = (coordA-coordB)
+    #print(r)
     escalar = (con.G * mA * mB)/(norm(r)**3)
-    return (escalar * (r/norm(r)))
+    return -1*(escalar * (r))
     
 def springForce(coordA, coordB, radA, radB, k):
     """Essa função recebe as coordenadas dos corpos, seus raios, e uma constante elástica. Ela checa primeiro se existe um choque entre os corpos,
@@ -28,4 +29,4 @@ def springForce(coordA, coordB, radA, radB, k):
 
 def calculateForce(coordA, coordB, radA, radB, mA, mB, k):
     """Soma as forças gravitacional e de reação ao choque entre um corppo A e B"""
-    return gravForce(coordA, coordB, mA, mB) #- springForce(coordA, coordB, radA, radB, k)
+    return (gravForce(coordA, coordB, mA, mB)) - springForce(coordA, coordB, radA, radB, k)

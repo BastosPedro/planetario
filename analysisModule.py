@@ -34,8 +34,6 @@ class EulerModule:
         for x in range(0, int(self.count)+1):
             index.append(round(x*self.parametros_tempo.dt[0], aux))
        
-        
-        
         #aqui a lista de dataframes é montada preparado o dataframe é montado
         for x in range(size):
             history.append(pd.DataFrame(index = range(0, len(index)), columns = ["x", "y", "z", "v0x", "v0y", "v0z"])) #dataframe vazio
@@ -53,10 +51,10 @@ class EulerModule:
         
         #"iteracoes"
         for x in range (1, int(self.count)+1):
-            print(x)
+            print("iteracao: ", x)
             #calculos para cada planeta numa dada instancia   
             for m in range (numPlanets):
-                #calcula da força sofrida por cada planeta
+                #calcula da força sofrida no planeta
                 force = np.zeros(3)
                 for n in range(numPlanets):
                     if n != m:
@@ -67,13 +65,10 @@ class EulerModule:
                              self.planetas.raio[m], self.planetas.raio[n], 
                              self.planetas.massa[m], self.planetas.massa[n], self.contato_dem.loc[self.contato_iteracao[m][n]][0])
                         
-                        
-            
-                #calculo da aceleracao, velocidade, e posicao em cada planeta no instante analisado  
+                #calcula acleração, velocidade, e posição       
                 accel = force/self.planetas.massa[m]
-                print(force)
-                history[m].iloc[x][["v0x", "v0y", "v0z"]] = history[m].iloc[x-1][["v0x", "v0y", "v0z"]].values + (self.parametros_tempo.dt[0] * accel)
-                history[m].iloc[x][["x", "y", "z"]] = history[m].iloc[x-1][["x", "y", "z"]].values + (self.parametros_tempo.dt[0] * history[m].iloc[x][["v0x", "v0y", "v0z"]].values)
+                history[m].iloc[x][["v0x", "v0y", "v0z"]] = history[m].iloc[x-1][["v0x", "v0y", "v0z"]].to_numpy() + (self.parametros_tempo.dt[0] * accel)
+                history[m].iloc[x][["x", "y", "z"]] = history[m].iloc[x-1][["x", "y", "z"]].to_numpy() + (self.parametros_tempo.dt[0] * history[m].iloc[x][["v0x", "v0y", "v0z"]].to_numpy())
             
             
         return history
@@ -84,6 +79,7 @@ class EulerModule:
         
         writer = pd.ExcelWriter(filePath, engine = "openpyxl")
         
+        #quantidade de passos a serem pulados
         pacing = int((self.parametros_tempo.tempo_final_simulacao[0]/self.parametros_tempo.numero_de_passos_impressao[0])/self.parametros_tempo.dt[0])
                   
         printHistory = list()     
@@ -92,7 +88,8 @@ class EulerModule:
             
             for y in range(0, int(self.count)+1, pacing):
                 printHistory[x] = printHistory[x].append(self.history[x].iloc[y])            
-                
+            
+            #adiciona mais dados e formata para uma exibição melhor no excel
             printHistory[x]["raio"] = self.planetas.iloc[x].raio
             printHistory[x]["massa"] = self.planetas.iloc[x].massa
             printHistory[x].index.name = "instante"
@@ -102,6 +99,3 @@ class EulerModule:
         writer.save()
         
         return printHistory
-        
-            
-            
