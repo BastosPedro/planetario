@@ -29,7 +29,7 @@ class MainModule():
         plotagem = Plotter("saidas/complicado.xlsx")
         print("planilha lida")
 
-        plotagem.plot3dToFile(["red", "green", "blue"], "saidas/complicado.pdf")
+        #plotagem.plot3dToFile(["red", "green", "blue"], "saidas/complicado.pdf")
         plotagem.plot3d(["red", "blue", "green"])
         print("plotagem feita")
         
@@ -50,7 +50,7 @@ class MainModule():
         plotagem = Plotter("saidas/simples.xlsx")
         print("planilha lida")
 
-        plotagem.plot2dToFile(["red", "blue"], "saidas/simples.pdf")
+        #plotagem.plot2dToFile(["red", "blue"], "saidas/simples.pdf")
         plotagem.plot2d(["red", "blue"])
         print("plotagem feita")
         
@@ -71,7 +71,7 @@ class MainModule():
         plotagem = Plotter("saidas/batida.xlsx")
         print("planilha lida")
 
-        plotagem.plot2dToFile(["red", "blue"], "saidas/batida.pdf")
+        #plotagem.plot2dToFile(["red", "blue"], "saidas/batida.pdf")
         plotagem.plot2d(["red", "blue"])
         print("plotagem feita")
         
@@ -99,7 +99,7 @@ class MainModule():
             plotagem = Plotter(xlsxPath)
             print("planilha lida")
 
-            plotagem.plot2dToFile(colors, imagePath)
+            #plotagem.plot2dToFile(colors, imagePath)
             plotagem.plot2d(colors)
             print("plotagem feita")
         
@@ -127,7 +127,7 @@ class MainModule():
             plotagem = Plotter(xlsxPath)
             print("planilha lida")
 
-            plotagem.plot3dToFile(colors, imagePath)
+            #plotagem.plot3dToFile(colors, imagePath)
             plotagem.plot3d(colors)
             print("plotagem feita")
         
